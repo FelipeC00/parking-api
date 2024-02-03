@@ -19,7 +19,7 @@ public class User implements Serializable {
     private String password;
     @Enumerated(EnumType.STRING)//transforma o enum em string no banco de dados ao invés de números
     @Column(name = "role", nullable = false, length = 25)
-    private Role role;
+    private Role role = Role.ROLE_CLIENT;
     @Column(name = "creation_date")
     private LocalDateTime creationDate;
     @Column(name = "modification_date")
