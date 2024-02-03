@@ -1,4 +1,9 @@
 package com.example.demoparkapi.resources.dto;
+
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+
 /**
  * Data Transfer Object representing a user creation request.
  *
@@ -6,7 +11,11 @@ package com.example.demoparkapi.resources.dto;
  */
 
 public class UserRequestDto {
+    @NotBlank//validation for null, empty
+    @Email//validation for email format
     private String username;
+    @NotBlank
+    @Size(min = 6, max = 6)//defines min and max size for password
     private String password;
 
     public UserRequestDto() {

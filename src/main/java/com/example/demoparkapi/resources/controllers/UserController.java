@@ -6,6 +6,7 @@ import com.example.demoparkapi.resources.dto.UserRequestDto;
 import com.example.demoparkapi.resources.dto.UserResponseDto;
 import com.example.demoparkapi.resources.dto.mapper.UserMapper;
 import com.example.demoparkapi.services.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +22,7 @@ public class UserController {
     private UserService userService;
 
     @PostMapping
-    public ResponseEntity<UserResponseDto> create(@RequestBody UserRequestDto requestDto){
+    public ResponseEntity<UserResponseDto> create(@Valid @RequestBody UserRequestDto requestDto){
         User user = userService.save(UserMapper.toUser(requestDto));
         return ResponseEntity.status(HttpStatus.CREATED).body(UserMapper.toDto(user));
     }
@@ -31,7 +32,7 @@ public class UserController {
         return ResponseEntity.ok(UserMapper.toDto(user));
     }
     @PatchMapping("/{id}")
-    public ResponseEntity<Void> updatePassword(@PathVariable Long id, @RequestBody UserPasswordDto dto){
+    public ResponseEntity<Void> updatePassword(@PathVariable Long id,@Valid @RequestBody UserPasswordDto dto){
         User user = userService.editPassword(id, dto.getCurrentPassword(), dto.getNewPassword(), dto.getConfirmPassword());
         return ResponseEntity.noContent().build();
     }
