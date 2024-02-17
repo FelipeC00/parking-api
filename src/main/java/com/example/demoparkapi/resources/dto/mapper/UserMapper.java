@@ -21,7 +21,9 @@ public class UserMapper {
      * @return a User entity
      */
     public static User toUser(UserRequestDto requestDto){
-        return new ModelMapper().map(requestDto, User.class);
+        ModelMapper modelMapper = new ModelMapper();
+        User user = modelMapper.map(requestDto, User.class);
+        return user;
     }
     /**
      * Converts a User entity into a UserResponseDto object.
@@ -48,7 +50,8 @@ public class UserMapper {
         };
         ModelMapper mapper = new ModelMapper();
         mapper.addMappings(props);
-        return mapper.map(user, UserResponseDto.class);
+        UserResponseDto userResponseDto = mapper.map(user, UserResponseDto.class);
+        return userResponseDto;
     }
     public static List<UserResponseDto> toListDto(List<User> users){
         List<UserResponseDto> list = users.stream().map(x -> toDto(x)).collect(Collectors.toList());

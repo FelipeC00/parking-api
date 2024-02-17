@@ -1,6 +1,6 @@
 package com.example.demoparkapi.resources.exceptions;
 
-import com.example.demoparkapi.services.exceptions.DataBaseException;
+import com.example.demoparkapi.services.exceptions.UserNameUniqueViolationException;
 import com.example.demoparkapi.services.exceptions.EntityNotFoundException;
 import com.example.demoparkapi.services.exceptions.PasswordInvalidException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,42 +19,41 @@ public class ApiExceptionHandler {
 
     @ExceptionHandler(PasswordInvalidException.class)
     public ResponseEntity<ErrorMessage> passwordInvalidException(PasswordInvalidException e, HttpServletRequest request){
-        HttpStatus status= HttpStatus.BAD_REQUEST;
-        ErrorMessage err = new ErrorMessage(request, status, e.getMessage());
 
         log.error("Api error: ", e);
-        return ResponseEntity.status(status).contentType(MediaType.APPLICATION_JSON).body(err);
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(new ErrorMessage(request, HttpStatus.BAD_REQUEST, e.getMessage()));
     }
 
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<ErrorMessage> entityNotFoundException(EntityNotFoundException e, HttpServletRequest request){
-        HttpStatus status= HttpStatus.NOT_FOUND;
-        ErrorMessage err = new ErrorMessage(request, status, e.getMessage());
 
         log.error("Api error: ", e);
-        return ResponseEntity.status(status).contentType(MediaType.APPLICATION_JSON).body(err);
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(new ErrorMessage(request, HttpStatus.NOT_FOUND, e.getMessage()));
     }
 
-    @ExceptionHandler(DataBaseException.class)
-    public ResponseEntity<ErrorMessage> dataBaseException(DataBaseException e, HttpServletRequest request){
-        HttpStatus status= HttpStatus.CONFLICT;
-        ErrorMessage err = new ErrorMessage(request, status, e.getMessage());
+    @ExceptionHandler(UserNameUniqueViolationException.class)
+    public ResponseEntity<ErrorMessage> uniqueViolationException(UserNameUniqueViolationException e, HttpServletRequest request){
 
         log.error("Api error: ", e);
-        return ResponseEntity.status(status).contentType(MediaType.APPLICATION_JSON).body(err);
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(new ErrorMessage(request, HttpStatus.CONFLICT, e.getMessage()));
     }
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ExceptionHandler(MethodArgumentNotValidException.class)//when the user provides info in an invalid format
     public ResponseEntity<ErrorMessage> methodArgumentNotValidException(MethodArgumentNotValidException e,
-                                                                        HttpServletRequest request,
-                                                                        BindingResult result){
-        HttpStatus status= HttpStatus.UNPROCESSABLE_ENTITY;
-        ErrorMessage err = new ErrorMessage(request, status, e.getMessage(), result);
-
+                                                                        HttpServletRequest request, BindingResult result){
         log.error("Api error: ", e);
-        return ResponseEntity.status(status).contentType(MediaType.APPLICATION_JSON).body(err);
+        return ResponseEntity
+                .status(HttpStatus.UNPROCESSABLE_ENTITY)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(new ErrorMessage(request, HttpStatus.UNPROCESSABLE_ENTITY, e.getMessage(), result));
     }
-
-
-
 }

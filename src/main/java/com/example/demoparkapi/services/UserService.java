@@ -2,9 +2,9 @@ package com.example.demoparkapi.services;
 
 import com.example.demoparkapi.entities.User;
 import com.example.demoparkapi.repositories.UserRepository;
-import com.example.demoparkapi.services.exceptions.DataBaseException;
 import com.example.demoparkapi.services.exceptions.EntityNotFoundException;
 import com.example.demoparkapi.services.exceptions.PasswordInvalidException;
+import com.example.demoparkapi.services.exceptions.UserNameUniqueViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -25,7 +25,7 @@ public class UserService {
             return userRepository.save(user);
         }
         catch (DataIntegrityViolationException e){
-            throw new DataBaseException(e.getMessage());
+            throw new UserNameUniqueViolationException(e.getMessage());
         }
     }
 
