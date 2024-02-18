@@ -63,6 +63,8 @@ public class UserController {
                     @ApiResponse(responseCode = "400", description = "Password doesn't match",
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class))),
                     @ApiResponse(responseCode = "404", description = "Resource not found",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class))),
+                    @ApiResponse(responseCode = "422", description = "Invalid or not well formatted fields",
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
             })
     @PatchMapping("/{id}")
