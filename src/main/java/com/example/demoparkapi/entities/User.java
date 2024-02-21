@@ -29,6 +29,8 @@ public class User implements Serializable {
     @Column(name = "modified_by")
     private String modifiedBy;
 
+
+
     public User() {
     }
 

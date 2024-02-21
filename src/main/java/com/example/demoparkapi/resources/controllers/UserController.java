@@ -79,6 +79,7 @@ public class UserController {
                             content = @Content(mediaType = "application/json",
                                     array = @ArraySchema( schema = @Schema(implementation = UserResponseDto.class))))
             })
+
     @GetMapping
     public ResponseEntity<List<UserResponseDto>> findAll(){
         List<User> users = userService.findAll();
