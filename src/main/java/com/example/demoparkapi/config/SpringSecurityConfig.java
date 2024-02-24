@@ -1,5 +1,6 @@
 package com.example.demoparkapi.config;
 
+import com.example.demoparkapi.jwt.JwtAuthenticationEntryPoint;
 import com.example.demoparkapi.jwt.JwtAuthorizationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -30,8 +31,15 @@ public class SpringSecurityConfig {
                 .httpBasic(basic -> basic.disable())
                 .authorizeHttpRequests(
                         auth -> auth
-                                .requestMatchers(antMatcher(HttpMethod.POST, "/api/v1/users")).permitAll()
-                                .requestMatchers(antMatcher(HttpMethod.POST, "/api/v1/auth")).permitAll()
+                                .requestMatchers(
+                                        antMatcher(HttpMethod.POST, "/api/v1/usuarios"),
+                                        antMatcher(HttpMethod.POST, "/api/v1/auth"),
+                                        antMatcher("/docs-park.html"),
+                                        antMatcher("/docs-park/**"),
+                                        antMatcher("/swagger-ui.html"),
+                                        antMatcher("/swagger-ui/**"),
+                                        antMatcher("/webjars/**")
+                                ).permitAll()
                                 .anyRequest().authenticated()
                 )
                 .sessionManagement(
@@ -39,6 +47,10 @@ public class SpringSecurityConfig {
                 )
                 .addFilterBefore(
                         jwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class
+                )
+                .exceptionHandling(
+                        e -> e
+                                .authenticationEntryPoint(new JwtAuthenticationEntryPoint())
                 )
                 .build();
     }
